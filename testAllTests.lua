@@ -18,6 +18,10 @@ local a = {
     throwFailOk = {tests.EXPECT_THROW,function(a) return a end,"anError",3},
     throwFailWrongErr = {tests.EXPECT_THROW,function(a) error(a) end,"b","a"},
     throwPass = {tests.EXPECT_THROW,function(a) error(a) end,"a","a"}
+  },
+  expNOTHROW = {
+    noThrowFail = {tests.EXPECT_NOTHROW,function(a) error(a) end,"a"},
+    noThrowPass = {tests.EXPECT_NOTHROW,function(a) return a end,"a"}
   }
 }
 

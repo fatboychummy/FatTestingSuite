@@ -24,8 +24,29 @@ end
 ]]
 function runTests(list)
   local totalFails = 0
+  local failedSections = {}
+
+  local function addSection(key)
+    local isIn = false
+    for i = 1,#failedSections do
+      if failedSections[i][1] == key then
+        isIn = true
+        failedSections[i][2] = failedSections[i][2] + 1
+        break
+      end
+    end
+    -- Above: Checks if the current section is there
+    if not isIn then
+      failedSections[#failedSections + 1] = {key, 1}
+    end
+    -- If the current section is not there, add it.
+  end
+
+  -- Loop through the Sections (v)
   for k,v in pairs(list) do
     local testFails = 0
+
+    -- Loop through the Tests (k2) in section k
     for k2, v2 in pairs(v) do
       --
       local f = k .. "." .. k2 .. "("
@@ -33,6 +54,9 @@ function runTests(list)
         f = (type(v2[i]) == "string" and f .. "\"" .. v2[i] .. "\"")
           or (type(v2[i]) ~= "function" and type(v2[i]) ~= "table" and f .. v2[i])
           or (f .. type(v2[i]))
+          -- if function or table, just add the type of var
+          -- if string, add "quotes"
+          -- otherwise, just add the var
         if i < #v2 then
           f = f .. ", "
         end
@@ -49,6 +73,7 @@ function runTests(list)
         print("[ FAULT]: " .. f)
         -- if there is an error, print the info and the error
         testFails = testFails + 1
+        addSection(k)
       else
         if passedTest then
           print("[  OKAY]: " .. f)
@@ -56,6 +81,7 @@ function runTests(list)
           print("  " .. message)
           print("[ ERROR]: " .. f)
           testFails = testFails + 1
+          addSection(k)
         end
       end
     end
@@ -67,6 +93,12 @@ function runTests(list)
   end
   print("All tests complete.")
   print("There were " .. tostring(totalFails) .. " failed test(s).")
+  print("Failures:")
+  for i = 1,#failedSections do
+    local s = failedSections[i]
+    print(s[2] > 1 and "  " .. s[1] .. " (" .. s[2] .. " failures)"
+      or "  " .. s[1] .. " (" .. s[2] .. " failure)")
+  end
   if totalFails > 0 then
     return -1
   end
