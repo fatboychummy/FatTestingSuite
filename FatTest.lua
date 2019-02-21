@@ -69,7 +69,7 @@ function runTests(list)
       -- run the function
       if not ok then
         print(err(k,k2))
-        print("  " .. passedTest)
+        print("  " .. tostring(passedTest))
         print("[ FAULT]: " .. f)
         -- if there is an error, print the info and the error
         testFails = testFails + 1
@@ -106,9 +106,11 @@ function runTests(list)
 end
 
 function styleTest(file)
-
+  --TODO: Figure out in what ways the files need to be tested
+  --TODO: Figure out how to make the test "customizable"
+  --TODO: Implement this
 end
 
 
 return runTests
--- Compatible with os.loadAPI, require, dofile
+-- Compatible with ??os.loadAPI??, require, dofile
