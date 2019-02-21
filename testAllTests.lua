@@ -22,6 +22,11 @@ local a = {
   expNOTHROW = {
     noThrowFail = {tests.EXPECT_NOTHROW,function(a) error(a) end,"a"},
     noThrowPass = {tests.EXPECT_NOTHROW,function(a) return a end,"a"}
+  },
+  expCUSTOM = {
+    passTest = {tests.EXPECT_CUSTOM,function(a) return a end,true},
+    failTest = {tests.EXPECT_CUSTOM,function(a, b) return a,b end,false,"This is a custom error message!"},
+    errTest = {tests.EXPECT_CUSTOM,function(a) error(a) end,"Custom error!"},
   }
 }
 
