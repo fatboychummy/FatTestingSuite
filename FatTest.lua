@@ -52,7 +52,8 @@ function runTests(list)
       local f = k .. "." .. k2 .. "("
       for i = 2,#v2 do
         f = (type(v2[i]) == "string" and f .. "\"" .. v2[i] .. "\"")
-          or (type(v2[i]) ~= "function" and type(v2[i]) ~= "table" and f .. tostring(v2[i]))
+          or (type(v2[i]) ~= "function" and type(v2[i]) ~= "table" and f
+              .. tostring(v2[i]))
           or (f .. type(v2[i]))
           -- if function or table, just add the type of var
           -- if string, add "quotes"
@@ -76,7 +77,7 @@ function runTests(list)
         addSection(k)
       else
         if passedTest then
-          print("[  OKAY]: " .. f)
+          print("[    OK]: " .. f)
         else
           print("  " .. message)
           print("[ ERROR]: " .. f)

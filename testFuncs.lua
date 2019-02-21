@@ -10,7 +10,8 @@ end
 -- maximum difference of "diff"
 function funcs.EXPECT_NEAR(a, b, diff)
   return a > b - diff and a < b + diff,
-    "EXPECT_NEAR: " .. tostring(a) .. ", and " .. tostring(b) .. " are " .. tostring(math.abs(a - b))
+    "EXPECT_NEAR: " .. tostring(a) .. ", and " .. tostring(b) .. " are "
+    .. tostring(math.abs(a - b))
     .. " apart, which is greater than " .. tostring(diff) .. "."
 end
 
@@ -19,12 +20,17 @@ end
 -- after that is function inputs
 -- NOTE: ignores line numbers, only takes the stuff after "fileName.lua:53: "
 function funcs.EXPECT_THROW(a, err, ...)
-  local ok, er = pcall(a,...)
+  local ok, er = pcall(a, ...)
   er = string.match(er, ":%d+: (%S+)")
   return not ok and er == err,
     ok and "EXPECT_THROW: function did not throw error." or
     "EXPECT_THROW: \n    " .. tostring(er) .. " (thrown)\n    "
     .. tostring(err) .. " (expected)\n  errors do not match."
+end
+
+function funcs.EXPECT_ANY_THROW(a, ...)
+  local ok,er = pcall(a, ...)
+  return not ok, ok and "EXPECT_ANY_THROW: function did not throw error."
 end
 
 -- expects no error to be thrown
